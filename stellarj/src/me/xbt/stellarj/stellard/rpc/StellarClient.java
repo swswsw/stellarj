@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import flexjson.JSONDeserializer;
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 /**
@@ -57,5 +58,20 @@ public class StellarClient {
 		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", AccountCurrenciesResult.class).deserialize(jsonResult, StellarResultContainer.class);
 		
 		return (AccountCurrenciesResult)container.getResult();
+	}
+	
+	public AccountInfoResult accountInfo(String account) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("account", account);
+		
+		String jsonResult = client.sendCommand("account_info", param);
+		// convert result
+		//AccountCurrenciesResult result = new JSONDeserializer<AccountCurrenciesResult>().deserialize(jsonResult, AccountCurrenciesResult.class);
+				
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", AccountInfoResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (AccountInfoResult)container.getResult();
 	}
 }
