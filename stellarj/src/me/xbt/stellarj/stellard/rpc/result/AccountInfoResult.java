@@ -77,7 +77,4 @@ public class AccountInfoResult extends StellarResult {
 		
 	}
 	
-	public String toString() {
-		return new JSONSerializer().prettyPrint(true).deepSerialize(this);
-	}
 }

@@ -1,5 +1,7 @@
 package me.xbt.stellarj.stellard.rpc.result;
 
+import flexjson.JSONSerializer;
+
 /**
  * 
  * @author kaye wu
@@ -18,4 +20,7 @@ public class StellarResult {
 	}
 	
 	
+	public String toString() {
+		return new JSONSerializer().prettyPrint(true).deepSerialize(this);
+	}
 }

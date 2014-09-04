@@ -94,6 +94,7 @@ public class RpcClient {
 		wr.close();
  
 		int responseCode = con.getResponseCode();
+		System.out.println("http response code="+responseCode);
  
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));

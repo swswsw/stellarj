@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import flexjson.JSONDeserializer;
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 /**
@@ -73,5 +74,30 @@ public class StellarClient {
 		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", AccountInfoResult.class).deserialize(jsonResult, StellarResultContainer.class);
 		
 		return (AccountInfoResult)container.getResult();
+	}
+	
+	public AccountLinesResult accountLines(String account, String peer, LedgerIndex ledgerIndex, String ledgerHash) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("account", account);
+		if (peer != null) {
+			param.put("peer", peer);
+		}
+		if (ledgerIndex != null) {
+			if (ledgerIndex.getKeyword() != null) {
+				param.put("ledger_index", ledgerIndex.getKeyword().toString());
+			} else {
+				param.put("ledger_index", ledgerIndex.getSeqNum());
+			}
+		}
+		if (ledgerHash != null) {
+			param.put("ledger_hash", ledgerHash);
+		}
+		String jsonResult = client.sendCommand("account_lines", param);
+		// convert result
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", AccountLinesResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (AccountLinesResult)container.getResult();
 	}
 }

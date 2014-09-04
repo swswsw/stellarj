@@ -48,9 +48,4 @@ public class AccountCurrenciesResult extends StellarResult {
 	}
 
 	
-	public String toString() {
-		return new JSONSerializer().prettyPrint(true).deepSerialize(this);
-		//return "{ status="+getStatus()+", receive_currencies="+receive_currencies+", send_currencies="+send_currencies + " }";
-	}
-	
 }

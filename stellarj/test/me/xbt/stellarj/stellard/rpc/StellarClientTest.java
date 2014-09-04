@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -21,6 +22,7 @@ public class StellarClientTest {
 	public static void main(String[] args) throws Exception {
 		testAccountCurrencies();
 		testAccountInfo();
+		testAccountLines();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -45,6 +47,20 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.out.println("testAccountInfo failed");
+		}
+	}
+	
+	private static void testAccountLines() throws IOException {
+		String account = "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb";
+		String peer = null;
+		LedgerIndex ledgerIndex = null;
+		String ledgerHash = null;
+		
+		AccountLinesResult result = client.accountLines(account, peer, ledgerIndex, ledgerHash);
+		System.out.println("AccountLinesResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.out.println("testAccountLines failed");
 		}
 	}
 	
