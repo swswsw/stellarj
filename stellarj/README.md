@@ -22,7 +22,10 @@ second question?
 should i just use the underscore (_) name for all the method parameters (same as the json name) or use camel case (java convention)?
 
 eg. 
+
 StellarClient.accountCurrencies(account, ledgerIndex, ledgerHash)
+
 or
+
 StellarClient.account_currencies(account, ledger_index, ledger_hash)
 
