@@ -3,6 +3,8 @@ package me.xbt.stellarj.stellard.rpc.result;
 import java.util.ArrayList;
 import java.util.List;
 
+import flexjson.JSONSerializer;
+
 /**
 {
   "result": {
@@ -18,11 +20,7 @@ import java.util.List;
 public class AccountCurrenciesResult {
 
 	private String status;
-	
-	/** eg. ["USD", "LTC"] */
-	private List<String> receiveCurrencies = new ArrayList<String>();
-	/** eg. ["USD", "LTC"] */
-	private List<String> sendCurrencies = new ArrayList<String>();
+
 	/** eg. ["USD", "LTC"] */
 	private List<String> receive_currencies = new ArrayList<String>();
 	/** eg. ["USD", "LTC"] */
@@ -34,18 +32,6 @@ public class AccountCurrenciesResult {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public List<String> getReceiveCurrencies() {
-		return receiveCurrencies;
-	}
-	public void setReceiveCurrencies(List<String> receiveCurrencies) {
-		this.receiveCurrencies = receiveCurrencies;
-	}
-	public List<String> getSendCurrencies() {
-		return sendCurrencies;
-	}
-	public void setSendCurrencies(List<String> sendCurrencies) {
-		this.sendCurrencies = sendCurrencies;
 	}
 	
 	public List<String> getReceive_currencies() {
@@ -63,7 +49,8 @@ public class AccountCurrenciesResult {
 
 	
 	public String toString() {
-		return "{ status="+getStatus()+", receiveCurrencies="+getReceiveCurrencies()+", sendCurrencies="+getSendCurrencies()+", receive_currencies="+receive_currencies+", send_currencies="+send_currencies + " }";
+		return new JSONSerializer().include("receive_currencies").include("send_currencies").serialize(this).toString();
+		//return "{ status="+getStatus()+", receive_currencies="+receive_currencies+", send_currencies="+send_currencies + " }";
 	}
 	
 }
