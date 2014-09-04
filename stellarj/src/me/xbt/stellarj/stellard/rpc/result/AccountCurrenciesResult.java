@@ -17,9 +17,9 @@ import flexjson.JSONSerializer;
  * @author kaye wu
  *
  */
-public class AccountCurrenciesResult {
+public class AccountCurrenciesResult extends StellarResult {
 
-	private String status;
+	//private String status;
 
 	/** eg. ["USD", "LTC"] */
 	private List<String> receive_currencies = new ArrayList<String>();
@@ -27,12 +27,12 @@ public class AccountCurrenciesResult {
 	private List<String> send_currencies = new ArrayList<String>();
 	
 
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+//	public String getStatus() {
+//		return status;
+//	}
+//	public void setStatus(String status) {
+//		this.status = status;
+//	}
 	
 	public List<String> getReceive_currencies() {
 		return receive_currencies;
@@ -49,7 +49,7 @@ public class AccountCurrenciesResult {
 
 	
 	public String toString() {
-		return new JSONSerializer().include("receive_currencies").include("send_currencies").serialize(this).toString();
+		return new JSONSerializer().prettyPrint(true).deepSerialize(this);
 		//return "{ status="+getStatus()+", receive_currencies="+receive_currencies+", send_currencies="+send_currencies + " }";
 	}
 	
