@@ -28,8 +28,8 @@ public class AccountLinesResult extends StellarResult {
 		private String currency = null;
 		private String limit = null;
 		private String limit_peer = null;
-		private int quality_in = -1;
-		private int quality_out = -1;
+		private int quality_in = UNINITIATED;
+		private int quality_out = UNINITIATED;
 		
 		public String getAccount() {
 			return account;

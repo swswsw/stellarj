@@ -8,6 +8,8 @@ import flexjson.JSONSerializer;
  *
  */
 public class StellarResult {
+	/** to show a value is uninitiated */
+	public static final int UNINITIATED = -2;
 
 	private String status;
 

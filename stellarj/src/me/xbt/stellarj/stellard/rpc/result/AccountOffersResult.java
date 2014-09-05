@@ -138,8 +138,8 @@ public class AccountOffersResult extends StellarResult {
 	 *
 	 */
 	public static class Offer {
-		private int flags = -1;
-		private int seq = -1;
+		private int flags = UNINITIATED;
+		private int seq = UNINITIATED;
 		
 		// these 2 value could be a string or an object.
 		// java is a strongly-typed language and cannot do that. 

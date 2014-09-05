@@ -23,12 +23,12 @@ public class AccountInfoResult extends StellarResult {
 	}
 
 	public static class AccountData {
-		private long Balance = -1;
-		private int Flags = -1;
-		private int OwnerCount = -1;
+		private long Balance = UNINITIATED;
+		private int Flags = UNINITIATED;
+		private int OwnerCount = UNINITIATED;
 		private String PreviousTxnID = null;
-		private long PreviousTxnLgrSeq = -1;
-		private long Sequence = -1;
+		private long PreviousTxnLgrSeq = UNINITIATED;
+		private long Sequence = UNINITIATED;
 		private String index = null;
 		
 		public long getBalance() {
