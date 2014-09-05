@@ -17,7 +17,7 @@ Usage Example
 
 questions
 
-i now have a question i'm trying to decide.
+i now have a decision i'm trying to decide.
 
 each method will return a java object.  eg. account_currencies method will return AccountCurrenciesResult object.  which represents the json result.  ie. 
 
