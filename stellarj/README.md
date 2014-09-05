@@ -1,4 +1,21 @@
-java stellar library
+Java Stellar Library
+
+
+Usage
+
+		String url = "https://test.stellar.org:9002";
+		StellarClient client = new StellarClient(url);
+		
+		String account = "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb";
+		AccountInfoResult result = client.accountInfo(account);
+		System.out.println("AccountInfoResult=" + result);
+		result.getStatus();
+
+
+
+
+
+questions
 
 i now have a question i'm trying to decide.
 
