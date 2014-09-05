@@ -69,11 +69,11 @@ public class AccountOffersResult extends StellarResult {
 			aor.setStatus(resultJson.getString("status"));
 			aor.setAccount(resultJson.getString("account"));
 			JSONArray offersJson = resultJson.getJSONArray("offers");
-			List<AccountOffersResult.Offer> offers = new ArrayList<AccountOffersResult.Offer>();
+			List<Offer> offers = new ArrayList<Offer>();
 			if (offersJson != null) {
 				for (int i=0; i<offersJson.length(); i++) {
 					JSONObject offerJson = offersJson.getJSONObject(i);
-					AccountOffersResult.Offer offer = new AccountOffersResult.Offer();
+					Offer offer = new Offer();
 					offer.setFlags(offerJson.getInt("flags"));
 					offer.setSeq(offerJson.getInt("seq"));
 					

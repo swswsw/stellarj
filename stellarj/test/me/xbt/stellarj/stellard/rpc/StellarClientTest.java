@@ -3,10 +3,13 @@ package me.xbt.stellarj.stellard.rpc;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -25,6 +28,7 @@ public class StellarClientTest {
 		testAccountInfo();
 		testAccountLines();
 		testAccountOffers();
+		testAccountTx();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -77,6 +81,25 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testAccountOffers failed");
+		}
+	}
+	
+	private static void testAccountTx() throws IOException {
+		String account = "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb";
+		long ledgerIndexMin = 0;
+		Long ledgerIndexMax = null;
+		LedgerIndex ledgerIndex = null;
+		String ledgerHash = null;
+		Boolean binary = null;
+		Boolean forward = null;
+		long limit = 4;
+		JSONObject marker = null;
+		
+		AccountTxResult result = client.accountTx(account, ledgerIndexMin, ledgerIndexMax, ledgerIndex, ledgerHash, binary, forward, limit, marker);
+		System.out.println("AccountTxResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testAccountTx failed");
 		}
 	}
 	

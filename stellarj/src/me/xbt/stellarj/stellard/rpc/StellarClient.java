@@ -6,6 +6,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -124,10 +125,62 @@ public class StellarClient {
 		String jsonResult = client.sendCommand("account_offers", param);
 		
 		// convert result manually because taker_gets can be string or object.
-		AccountOffersResult aor = AccountOffersResult.convert(jsonResult);
+		AccountOffersResult result = AccountOffersResult.convert(jsonResult);
 		
-		return aor;
+		return result;
 	}
 	
+	/**
+	 * 
+Field	Type	Description
+account	String	A unique identifier for the account, most commonly the account’s address.
+ledger_index_min	Integer	Use to specify the earliest ledger to include transactions from. A value of -1 instructs the server to use the earliest ledger available.
+ledger_index_max	Integer	Use to specify the most recent ledger to include transactions from. A value of -1 instructs the server to use the most recent one available.
+ledger_hash	String	(Optional) Use instead of ledger_index_min and ledger_index_max to look for transactions from a single ledger only. (See Specifying a Ledger)
+ledger_index	String or Unsigned Integer	(Optional) Use instead of ledger_index_min and ledger_index_max to look for transactions from a single ledger only. (See Specifying a Ledger)
+binary	Boolean	(Optional, defaults to False) If set to True, return transactions as hex strings instead of JSON.
+forward	boolean	(Optional, defaults to False) If set to True, return values indexed with the oldest ledger first. Otherwise, the results are indexed with the newest ledger first. (Each page of results may not be internally ordered, but the pages are overall ordered.)
+limit	Integer	(Optional, default varies) Limit the number of transactions to retrieve. The server is not required to honor this value.
+marker	(Not Specified)	Server-provided value to specify where to resume retrieving data from.
+
+	 * @param account
+	 * @param peer
+	 * @param ledgerIndex
+	 * @param ledgerHash
+	 * @return
+	 * @throws IOException
+	 */
+	public AccountTxResult accountTx(String account, Long ledgerIndexMin, Long ledgerIndexMax, LedgerIndex ledgerIndex, 
+			String ledgerHash, Boolean binary, Boolean forward, Long limit, JSONObject marker) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("account", account);
+		if (ledgerIndexMin != null) { param.put("ledger_index_min", ledgerIndexMin); }
+		if (ledgerIndexMax != null) { param.put("ledger_index_max", ledgerIndexMax); }
+		if (ledgerIndex != null) {
+			if (ledgerIndex.getKeyword() != null) {
+				param.put("ledger_index", ledgerIndex.getKeyword().toString());
+			} else {
+				param.put("ledger_index", ledgerIndex.getSeqNum());
+			}
+		}
+		if (ledgerHash != null) {
+			param.put("ledger_hash", ledgerHash);
+		}
+		if (binary != null) { param.put("binary", binary); }
+		if (forward != null) { param.put("forward", forward); }
+		if (limit != null) { param.put("limit", limit); }
+		if (marker != null) { param.put("marker", marker); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("account_tx", param);
+		
+		// convert result manually because taker_gets can be string or object.
+		AccountTxResult result = AccountTxResult.convert(jsonResult);
+		
+		return result;
+	}
 	
 }
