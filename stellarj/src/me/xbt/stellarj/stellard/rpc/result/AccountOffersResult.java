@@ -3,6 +3,9 @@ package me.xbt.stellarj.stellard.rpc.result;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * because documentation is currently unavailable on stellar.  
  * we follow ripple documentation here: http://dev.ripple.com/rippled-apis.html#account-offers
@@ -30,6 +33,89 @@ public class AccountOffersResult extends StellarResult {
 
 	public void setOffers(List<Offer> offers) {
 		this.offers = offers;
+	}
+	
+	/**
+	 * convert the json string into an instance of this object.  
+	 * convert manually instead of using flexjson because taker_gets can be string or object.
+	 * 
+	 * @param json
+	 * @return
+	 */
+	public static AccountOffersResult convert(String jsonString) {
+		// eg.		
+//		{
+//			  "result": {
+//			    "account": "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb",
+//			    "offers": [
+//			      {
+//			        "flags": 0,
+//			        "seq": 40,
+//			        "taker_gets": "600000000",
+//			        "taker_pays": {
+//			          "currency": "DBG",
+//			          "issuer": "g4cHTkj4YQmMJhrJFCKL1g9rNf4yJRpruP",
+//			          "value": "55"
+//			        }
+//			      }
+//			    ],
+//			    "status": "success"
+//			  }
+//			}
+		AccountOffersResult aor = new AccountOffersResult();
+		JSONObject json = new JSONObject(jsonString);
+		JSONObject resultJson = json.getJSONObject("result");
+		if (resultJson != null) {
+			aor.setStatus(resultJson.getString("status"));
+			aor.setAccount(resultJson.getString("account"));
+			JSONArray offersJson = resultJson.getJSONArray("offers");
+			List<AccountOffersResult.Offer> offers = new ArrayList<AccountOffersResult.Offer>();
+			if (offersJson != null) {
+				for (int i=0; i<offersJson.length(); i++) {
+					JSONObject offerJson = offersJson.getJSONObject(i);
+					AccountOffersResult.Offer offer = new AccountOffersResult.Offer();
+					offer.setFlags(offerJson.getInt("flags"));
+					offer.setSeq(offerJson.getInt("seq"));
+					
+					Object takerGetsObj = offerJson.get("taker_gets");
+					offer.setTaker_gets(toCurrencyAmount(takerGetsObj));
+					Object takerPaysObj = offerJson.get("taker_pays");
+					offer.setTaker_pays(toCurrencyAmount(takerPaysObj));
+					
+					offers.add(offer);
+				}
+			}
+			aor.setOffers(offers);
+		}
+		
+		return aor;
+	}
+	
+	/**
+	 * convert a string or jsonobject to CurrencyAmount
+	 * 
+	 * @param obj - could be either a String or JSONObject
+	 * eg. "6000000" 
+	 * eg.
+	 * {
+          "currency": "DBG",
+          "issuer": "g4cHTkj4YQmMJhrJFCKL1g9rNf4yJRpruP",
+          "value": "55"
+        }
+	 * @return
+	 */
+	private static CurrencyAmount toCurrencyAmount(Object obj) {
+		CurrencyAmount ca = new CurrencyAmount();
+		if (obj instanceof String) {
+			ca.setValue((String)obj);
+		} else if (obj instanceof JSONObject) {
+			JSONObject json = ((JSONObject) obj);
+			ca.setCurrency(json.getString("currency"));
+			ca.setIssuer(json.getString("issuer"));
+			ca.setValue(json.getString("value"));
+		}
+		
+		return ca;
 	}
 
 	/**
