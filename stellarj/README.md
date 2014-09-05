@@ -1,7 +1,7 @@
 Java Stellar Library
 
 
-Usage
+Usage Example
 
 		String url = "https://test.stellar.org:9002";
 		StellarClient client = new StellarClient(url);
