@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
+import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -23,6 +24,7 @@ public class StellarClientTest {
 		testAccountCurrencies();
 		testAccountInfo();
 		testAccountLines();
+		testAccountOffers();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -35,7 +37,7 @@ public class StellarClientTest {
 		System.out.println("AccountCurrenciesResult=" + result);
 		
 		if (!"success".equals(result.getStatus())) {
-			System.out.println("testAccountCurrencies failed");
+			System.err.println("testAccountCurrencies failed");
 		}
 	}
 	
@@ -46,7 +48,7 @@ public class StellarClientTest {
 		System.out.println("AccountInfoResult=" + result);
 		
 		if (!"success".equals(result.getStatus())) {
-			System.out.println("testAccountInfo failed");
+			System.err.println("testAccountInfo failed");
 		}
 	}
 	
@@ -60,7 +62,21 @@ public class StellarClientTest {
 		System.out.println("AccountLinesResult=" + result);
 		
 		if (!"success".equals(result.getStatus())) {
-			System.out.println("testAccountLines failed");
+			System.err.println("testAccountLines failed");
+		}
+	}
+	
+	private static void testAccountOffers() throws IOException {
+		String account = "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb";
+		String peer = null;
+		LedgerIndex ledgerIndex = null;
+		String ledgerHash = null;
+		
+		AccountOffersResult result = client.accountOffers(account, peer, ledgerIndex, ledgerHash);
+		System.out.println("AccountOffersResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testAccountOffers failed");
 		}
 	}
 	
