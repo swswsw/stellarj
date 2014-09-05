@@ -1,6 +1,5 @@
 package me.xbt.stellarj.stellard.rpc.result;
 
-import flexjson.JSONSerializer;
 
 /**
  * why are attribute names in camelcase when 

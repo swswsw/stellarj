@@ -3,8 +3,6 @@ package me.xbt.stellarj.stellard.rpc.result;
 import java.util.ArrayList;
 import java.util.List;
 
-import flexjson.JSONSerializer;
-
 /**
 {
   "result": {
