@@ -7,6 +7,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
+import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -182,5 +183,32 @@ marker	(Not Specified)	Server-provided value to specify where to resume retrievi
 		
 		return result;
 	}
+	
+	/**
+	 * 
+	 * Generates public/private key pair for use as a Stellar account.
+	 * 
+	 * @param passphrase - [string | optional]  If specified it will create the secret key from a hash of the passphrase.
+	 * @return
+	 * @throws IOException
+	 * 
+	 * @see {@link https://www.stellar.org/api/#api-create_keys}
+	 */
+	public CreateKeysResult createKeys(String passphrase) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		
+		if (passphrase != null) { param.put("passphrase", passphrase); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("create_keys", param);
+		
+		// convert result 
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", CreateKeysResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (CreateKeysResult)container.getResult();
+	}	
 	
 }

@@ -1,5 +1,7 @@
 Java Stellar Library
 
+still very early stage of development.
+
 
 Usage Example
 

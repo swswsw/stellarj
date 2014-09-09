@@ -10,6 +10,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
+import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -29,6 +30,7 @@ public class StellarClientTest {
 		testAccountLines();
 		testAccountOffers();
 		testAccountTx();
+		testCreateKeys();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -100,6 +102,17 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testAccountTx failed");
+		}
+	}
+	
+	private static void testCreateKeys() throws IOException {
+		String passphrase = null;
+		
+		CreateKeysResult result = client.createKeys(passphrase);
+		System.out.println("CreateKeysResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testCreateKeys failed");
 		}
 	}
 	
