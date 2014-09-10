@@ -10,6 +10,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
+import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -102,6 +103,19 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testAccountTx failed");
+		}
+	}
+	
+	private static void testBookOffers() throws IOException {
+		String taker = null;
+		Amount takerPays = null;
+		Amount takerGets = null;
+		
+		BookOffersResult result = client.bookOffers(taker, takerGets, takerPays);
+		System.out.println("BookOffersResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testBookOffers failed");
 		}
 	}
 	

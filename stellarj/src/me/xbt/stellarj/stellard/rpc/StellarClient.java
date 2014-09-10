@@ -7,6 +7,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountLinesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
+import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
@@ -182,6 +183,30 @@ marker	(Not Specified)	Server-provided value to specify where to resume retrievi
 		AccountTxResult result = AccountTxResult.convert(jsonResult);
 		
 		return result;
+	}
+	
+	/**
+	 * 
+taker	String	(Optional, defaults to ACCOUNT_ONE) Unique base-58 address of an account to use as point-of-view. (This affects which unfunded offers are returned.)
+taker_gets	Object	Specification of which currency the account taking the offer would receive, as an object with currency and issuer fields (omit issuer for XRP), similar to currency amounts.
+taker_pays	Object	Specification of which currency the account taking the offer would pay, as an object with currency and issuer fields (omit issuer for XRP), similar to currency amounts.
+	 */
+	public BookOffersResult bookOffers(String taker, Amount takerGets, Amount takerPays) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		if (taker != null) { param.put("taker", taker); }
+		if (takerGets != null) { param.put("taker_gets", takerGets); }
+		if (takerPays != null) { param.put("taker_pays", takerPays); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("book_offers", param);
+		
+		// convert result 
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", BookOffersResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (BookOffersResult)container.getResult();
 	}
 	
 	/**
