@@ -33,9 +33,10 @@ public class StellarClientTest {
 		testAccountLines();
 		testAccountOffers();
 		testAccountTx();
-		testCreateKeys();
-		testLedger();
-		testPing();
+		testBookOffers();
+		//testCreateKeys();
+		//testLedger();
+		//testPing();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -112,8 +113,13 @@ public class StellarClientTest {
 	
 	private static void testBookOffers() throws IOException {
 		String taker = null;
-		Amount takerPays = null;
-		Amount takerGets = null;
+		Amount takerPays = new Amount();
+		Amount takerGets = new Amount();
+		
+		takerPays.setCurrency("STR");
+		
+		takerGets.setCurrency("USD");
+		takerGets.setIssuer("ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb");
 		
 		BookOffersResult result = client.bookOffers(taker, takerGets, takerPays);
 		System.out.println("BookOffersResult=" + result);

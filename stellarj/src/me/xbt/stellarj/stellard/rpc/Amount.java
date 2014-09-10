@@ -1,5 +1,7 @@
 package me.xbt.stellarj.stellard.rpc;
 
+import org.json.JSONObject;
+
 /**
  * used in book_offers().
  * 
@@ -39,5 +41,16 @@ public class Amount {
 		this.issuer = issuer;
 	}
 	
+	/**
+	 * 
+	 * @return jsonobject that represents this object.  
+	 */
+	public JSONObject toJSONObject() {
+		JSONObject json = new JSONObject();
+		if (value != null) { json.put("value", value); }
+		if (currency != null) { json.put("currency", currency); }
+		if (issuer != null) { json.put("issuer", issuer); }
+		return json;
+	}
 	
 }

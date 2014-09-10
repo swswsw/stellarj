@@ -201,8 +201,8 @@ taker_pays	Object	Specification of which currency the account taking the offer w
 		// send command
 		JSONObject param = new JSONObject();
 		if (taker != null) { param.put("taker", taker); }
-		if (takerGets != null) { param.put("taker_gets", takerGets); }
-		if (takerPays != null) { param.put("taker_pays", takerPays); }
+		if (takerGets != null) { param.put("taker_gets", takerGets.toJSONObject()); }
+		if (takerPays != null) { param.put("taker_pays", takerPays.toJSONObject()); }
 		
 		System.out.println("param=" + param);
 		
