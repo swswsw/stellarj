@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import flexjson.JSONSerializer;
 
 /**
- * used in book_offers().
+ * https://www.stellar.org/api/#api-amount explains the structure.  
  * 
   eg. 
   {
@@ -15,7 +15,7 @@ import flexjson.JSONSerializer;
   }
  * @author t
  *
- * @see {@link http://dev.ripple.com/rippled-apis.html#book-offers}
+ * @see {@link https://www.stellar.org/api/#api-amount}
  */
 public class Amount {
 
@@ -53,6 +53,28 @@ public class Amount {
 		if (currency != null) { json.put("currency", currency); }
 		if (issuer != null) { json.put("issuer", issuer); }
 		return json;
+	}
+	
+	/**
+	 * An amount is either an amount of stellars (STR) (represetned as String) 
+	 * or an amount of some other currency (represented as an json object)
+	 * 
+	 * eg. "amount" : "55000000"
+	 * eg. 
+  "amount" : {
+    "value" : "34.5"
+    "currency" : "BTC",
+    "issuer" : "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb",
+  }
+	 * 
+	 * @return String or JSONObject
+	 */
+	public Object toValue() {
+		if (value != null && currency == null && issuer == null) {
+			return value;
+		} else {
+			return toJSONObject();
+		}
 	}
 	
 	public String toString() {
