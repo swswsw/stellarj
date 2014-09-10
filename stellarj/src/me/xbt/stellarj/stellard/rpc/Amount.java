@@ -2,6 +2,8 @@ package me.xbt.stellarj.stellard.rpc;
 
 import org.json.JSONObject;
 
+import flexjson.JSONSerializer;
+
 /**
  * used in book_offers().
  * 
@@ -51,6 +53,10 @@ public class Amount {
 		if (currency != null) { json.put("currency", currency); }
 		if (issuer != null) { json.put("issuer", issuer); }
 		return json;
+	}
+	
+	public String toString() {
+		return new JSONSerializer().prettyPrint(true).deepSerialize(this);
 	}
 	
 }

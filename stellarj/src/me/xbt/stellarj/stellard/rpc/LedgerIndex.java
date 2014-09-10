@@ -35,4 +35,17 @@ public class LedgerIndex {
 		this.keyword = keyword;
 	}
 	
+	/**
+	 * convert to value.  
+	 * it is either string of "current" or "validated", or a sequence number.  
+	 * @return String or Integer
+	 */
+	public Object toValue() {
+		if (this.getKeyword() != null) {
+			return this.getKeyword().toString();
+		} else {
+			return this.getSeqNum();
+		}
+	}
+	
 }

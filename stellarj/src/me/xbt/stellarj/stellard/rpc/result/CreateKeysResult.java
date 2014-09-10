@@ -32,7 +32,8 @@ eg.
     "public_key_hex": "BC80B0732C99DB85A9705A1EBE20E789816CDC94079C422696EBFA6C06833160",
     "status": "success"
   }
- * @author t
+ *
+ * @author kaye wu
  *
  */
 public class CreateKeysResult extends StellarResult {

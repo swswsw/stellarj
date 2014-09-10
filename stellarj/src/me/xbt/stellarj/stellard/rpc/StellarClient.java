@@ -11,6 +11,7 @@ import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.PingResult;
+import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -50,11 +51,7 @@ public class StellarClient {
 		JSONObject param = new JSONObject();
 		param.put("account", account);
 		if (ledgerIndex != null) {
-			if (ledgerIndex.getKeyword() != null) {
-				param.put("ledger_index", ledgerIndex.getKeyword().toString());
-			} else {
-				param.put("ledger_index", ledgerIndex.getSeqNum());
-			}
+			param.put("ledger_index", ledgerIndex.toValue());
 		}
 		if (ledgerHash != null) {
 			param.put("ledger_hash", ledgerHash);
@@ -92,11 +89,7 @@ public class StellarClient {
 			param.put("peer", peer);
 		}
 		if (ledgerIndex != null) {
-			if (ledgerIndex.getKeyword() != null) {
-				param.put("ledger_index", ledgerIndex.getKeyword().toString());
-			} else {
-				param.put("ledger_index", ledgerIndex.getSeqNum());
-			}
+			param.put("ledger_index", ledgerIndex.toValue());
 		}
 		if (ledgerHash != null) {
 			param.put("ledger_hash", ledgerHash);
@@ -117,11 +110,7 @@ public class StellarClient {
 			param.put("peer", peer);
 		}
 		if (ledgerIndex != null) {
-			if (ledgerIndex.getKeyword() != null) {
-				param.put("ledger_index", ledgerIndex.getKeyword().toString());
-			} else {
-				param.put("ledger_index", ledgerIndex.getSeqNum());
-			}
+			param.put("ledger_index", ledgerIndex.toValue());
 		}
 		if (ledgerHash != null) {
 			param.put("ledger_hash", ledgerHash);
@@ -163,11 +152,7 @@ marker	(Not Specified)	Server-provided value to specify where to resume retrievi
 		if (ledgerIndexMin != null) { param.put("ledger_index_min", ledgerIndexMin); }
 		if (ledgerIndexMax != null) { param.put("ledger_index_max", ledgerIndexMax); }
 		if (ledgerIndex != null) {
-			if (ledgerIndex.getKeyword() != null) {
-				param.put("ledger_index", ledgerIndex.getKeyword().toString());
-			} else {
-				param.put("ledger_index", ledgerIndex.getSeqNum());
-			}
+			param.put("ledger_index", ledgerIndex.toValue());
 		}
 		if (ledgerHash != null) {
 			param.put("ledger_hash", ledgerHash);
@@ -261,11 +246,7 @@ ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to curre
 		if (expand != null) { param.put("expand", accounts); }
 		if (ledgerHash != null) { param.put("ledger_hash", ledgerHash); }
 		if (ledgerIndex != null) {
-			if (ledgerIndex.getKeyword() != null) {
-				param.put("ledger_index", ledgerIndex.getKeyword().toString());
-			} else {
-				param.put("ledger_index", ledgerIndex.getSeqNum());
-			}
+			param.put("ledger_index", ledgerIndex.toValue());
 		}
 		
 		System.out.println("param=" + param);
@@ -289,5 +270,40 @@ ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to curre
 		
 		return (PingResult)container.getResult();
 	}
+	
+	/**  
+	 * arguments according to stellar doc: https://www.stellar.org/api/#api-sign
+	 * 
+tx_json	
+required 
+This is the JSON representation of the transaction for server to sign with the private key of the secret.
+If Sequence or Fee are not filled out then stellard will fill them in for if you.
+
+secret	
+required 
+The base58 encoded secret key of the signer.
+
+offline	
+bool | optional 
+If true stellard won't attempt to verify that the transaction is valid it will just sign it for you.
+	 */
+	public SignResult sign(JSONObject txJson, String secret, Boolean offline) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("tx_json", txJson);
+		param.put("secret", secret);
+		if (offline != null) { param.put("offline", offline); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("sign", param);
+		
+		// convert result 
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", SignResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (SignResult)container.getResult();
+	}
+	
 	
 }
