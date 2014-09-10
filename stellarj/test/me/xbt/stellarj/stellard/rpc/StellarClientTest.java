@@ -14,6 +14,7 @@ import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.PingResult;
+import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -37,6 +38,7 @@ public class StellarClientTest {
 		testCreateKeys();
 		testLedger();
 		testPing();
+		testSign();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -164,6 +166,47 @@ public class StellarClientTest {
 			System.err.println("testPing failed");
 		}
 	}
+	
+	private static void testSign() throws IOException {
+//		eg. 
+//		"tx_json" : {
+//	      "TransactionType": "Payment",
+//	      "Account":"ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb",
+//	      "Destination": "gHJPw9kW8v4BsUyDnBR8ZHWo8aEkhUMeAq",
+//	      "Amount": {
+//	        "currency": "USD",
+//	        "issuer": "ghj4kXtHfQcCaLQwpLJ11q2hq6248R7k9C",
+//	        "value": 10
+//	      }
+//	    }
+		
+		JSONObject txJson = new JSONObject();
+		txJson.put("TransactionType", "Payment");
+		txJson.put("Account", "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb");
+		txJson.put("Destination", "gHJPw9kW8v4BsUyDnBR8ZHWo8aEkhUMeAq");
+//		Amount amount = new Amount();
+//		amount.setCurrency("USD");
+//		amount.setIssuer("issuer");
+//		amount.setValue("10"); // value should be string.
+//		txJson.put("Amount", amount.toJSONObject());
+		JSONObject amount = new JSONObject();
+		amount.put("currency", "USD");
+		amount.put("issuer", "ghj4kXtHfQcCaLQwpLJ11q2hq6248R7k9C");
+		amount.put("value", 10);
+		txJson.put("Amount", amount);
+		
+		String secret = "s3q5ZGX2ScQK2rJ4JATp7rND6X5npG3De8jMbB7tuvm2HAVHcCN";
+		Boolean offline = null;
+		
+		SignResult result = client.sign(txJson, secret, offline);
+		System.out.println("SignResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testSign failed");
+		}
+	}
+	
+	
 	
 	private static void tempTest() {
 		AccountCurrenciesResult acr = new AccountCurrenciesResult();

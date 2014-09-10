@@ -274,10 +274,27 @@ ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to curre
 	/**  
 	 * arguments according to stellar doc: https://www.stellar.org/api/#api-sign
 	 * 
+	 * important: tx_json.Amount.value is integer in stellar.  it is string in ripple.  
+	 * also Amount.value is string in   
+	 * 
+	 * 
+	 * 
 tx_json	
 required 
 This is the JSON representation of the transaction for server to sign with the private key of the secret.
 If Sequence or Fee are not filled out then stellard will fill them in for if you.
+
+eg. 
+"tx_json" : {
+      "TransactionType": "Payment",
+      "Account":"ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb",
+      "Destination": "gHJPw9kW8v4BsUyDnBR8ZHWo8aEkhUMeAq",
+      "Amount": {
+        "currency": "USD",
+        "issuer": "ghj4kXtHfQcCaLQwpLJ11q2hq6248R7k9C",
+        "value": 10
+      }
+    }
 
 secret	
 required 

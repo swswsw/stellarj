@@ -48,3 +48,21 @@ or
 
 StellarClient.account_currencies(account, ledger_index, ledger_hash)
 
+
+
+
+
+documenting some of the inconsistencies in stellar.
+
+1. most of the time, the fields in request and response objects starts with lowercase and use "_" convention.  
+Sometimes, they start with uppercase and use camelcase convention.
+
+2. book_offers() api call:
+arguments taker_gets and taker_pays are Amount object.  Amount.value is string in this case.
+
+sign() api call:
+tx_json.Amount is also an Amount object, but Amount.value is integer in this case.  supplying string value will fail.  (test performed on 2014/09/09).
+
+  
+ 
+
