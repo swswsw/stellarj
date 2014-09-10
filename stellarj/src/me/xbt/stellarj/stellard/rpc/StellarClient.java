@@ -10,6 +10,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
+import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -275,6 +276,18 @@ ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to curre
 		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", LedgerResult.class).deserialize(jsonResult, StellarResultContainer.class);
 		
 		return (LedgerResult)container.getResult();
+	}
+	
+	public PingResult ping() throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		
+		String jsonResult = client.sendCommand("ping", param);
+		// convert result
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", PingResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (PingResult)container.getResult();
 	}
 	
 }

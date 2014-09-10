@@ -13,6 +13,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
+import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -34,6 +35,7 @@ public class StellarClientTest {
 		testAccountTx();
 		testCreateKeys();
 		testLedger();
+		testPing();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -145,6 +147,15 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testLedger failed");
+		}
+	}
+	
+	private static void testPing() throws IOException {
+		PingResult result = client.ping();
+		System.out.println("PingResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testPing failed");
 		}
 	}
 	
