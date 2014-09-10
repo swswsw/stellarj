@@ -12,6 +12,7 @@ import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
+import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -319,5 +320,15 @@ If true stellard won't attempt to verify that the transaction is valid it will j
 		return (SignResult)container.getResult();
 	}
 	
+	/**
+	 * decided not to implement this method yet because stellar doc has not yet clearly  
+	 * detail response format.  there is no static_path_find in ripple doc.
+	 * todo: implements
+	 * 
+	 * @return
+	 */
+	public StaticPathFindResult staticPathFind(String sourceAccount, String destinationAccount, Amount destinationAmount) throws IOException {
+		return null;
+	}
 	
 }
