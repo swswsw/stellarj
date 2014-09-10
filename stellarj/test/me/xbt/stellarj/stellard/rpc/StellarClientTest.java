@@ -36,7 +36,7 @@ public class StellarClientTest {
 		testBookOffers();
 		testCreateKeys();
 		testLedger();
-		//testPing();
+		testPing();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
