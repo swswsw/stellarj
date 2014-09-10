@@ -274,9 +274,6 @@ ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to curre
 	/**  
 	 * arguments according to stellar doc: https://www.stellar.org/api/#api-sign
 	 * 
-	 * important: tx_json.Amount.value is integer in stellar.  it is string in ripple.  
-	 * also Amount.value is string in   
-	 * 
 	 * 
 	 * 
 tx_json	
