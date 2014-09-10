@@ -12,6 +12,22 @@ public class LedgerResult extends StellarResult {
 
 	private LedgerContainer closed = null;
 	private LedgerContainer open = null;
+
+	public LedgerContainer getClosed() {
+		return closed;
+	}
+
+	public void setClosed(LedgerContainer closed) {
+		this.closed = closed;
+	}
+
+	public LedgerContainer getOpen() {
+		return open;
+	}
+
+	public void setOpen(LedgerContainer open) {
+		this.open = open;
+	}
 	
 	
 	public static class LedgerContainer {

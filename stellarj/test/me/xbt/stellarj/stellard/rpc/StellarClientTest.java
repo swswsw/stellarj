@@ -34,8 +34,8 @@ public class StellarClientTest {
 		testAccountOffers();
 		testAccountTx();
 		testBookOffers();
-		//testCreateKeys();
-		//testLedger();
+		testCreateKeys();
+		testLedger();
 		//testPing();
 	}
 	
