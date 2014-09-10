@@ -12,6 +12,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
+import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -32,6 +33,7 @@ public class StellarClientTest {
 		testAccountOffers();
 		testAccountTx();
 		testCreateKeys();
+		testLedger();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -127,6 +129,22 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testCreateKeys failed");
+		}
+	}
+	
+	private static void testLedger() throws IOException {
+		Boolean accounts = null;
+		Boolean transactions = null;
+		Boolean full = null;
+		Boolean expand = null;
+		String ledgerHash = null;
+		LedgerIndex ledgerIndex = null;
+		
+		LedgerResult result = client.ledger(accounts, transactions, full, expand, ledgerHash, ledgerIndex);
+		System.out.println("LedgerResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testLedger failed");
 		}
 	}
 	

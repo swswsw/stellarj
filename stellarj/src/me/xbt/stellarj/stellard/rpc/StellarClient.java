@@ -9,6 +9,7 @@ import me.xbt.stellarj.stellard.rpc.result.AccountOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountTxResult;
 import me.xbt.stellarj.stellard.rpc.result.BookOffersResult;
 import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
+import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 
 import org.json.JSONObject;
@@ -186,6 +187,9 @@ marker	(Not Specified)	Server-provided value to specify where to resume retrievi
 	}
 	
 	/**
+	 * there are some differences between stellar doc and ripple doc for this methods 
+	 * in the number of arguments.  we are following ripple in this case because ripple 
+	 * doc seems to be more mature.  
 	 * 
 taker	String	(Optional, defaults to ACCOUNT_ONE) Unique base-58 address of an account to use as point-of-view. (This affects which unfunded offers are returned.)
 taker_gets	Object	Specification of which currency the account taking the offer would receive, as an object with currency and issuer fields (omit issuer for XRP), similar to currency amounts.
@@ -234,6 +238,43 @@ taker_pays	Object	Specification of which currency the account taking the offer w
 		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", CreateKeysResult.class).deserialize(jsonResult, StellarResultContainer.class);
 		
 		return (CreateKeysResult)container.getResult();
-	}	
+	}
+	
+	/**  
+	 * 
+accounts	Boolean	(Optional, defaults to false) If true, return information on accounts in the ledger. Admin required. If enabled, this method returns a large amount of data, which may cause the request to fail due to a timeout, depending on the server load and capabilities.
+transactions	Boolean	(Optional, defaults to false) If true, return information on transactions in the specified ledger version.
+full	Boolean	(Optional, defaults to false) If true, return full information on the entire ledger. (Equivalent to enabling transactions, accounts, and expand Admin required
+expand	Boolean	(Optional, defaults to false) Provide full JSON-formatted information for transaction/account information instead of just hashes
+ledger_hash	String	(Optional) A 20-byte hex string identifying the ledger version to use.
+ledger_index	(Optional) Unsigned integer, or String	(Optional, defaults to current) The sequence number of the ledger to use, or “current”, “closed”, or “validated” to select a ledger dynamically. (See Ledger Indexes.)
+	 */
+	public LedgerResult ledger(Boolean accounts, Boolean transactions, Boolean full,
+			Boolean expand, String ledgerHash, LedgerIndex ledgerIndex) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		if (accounts != null) { param.put("accounts", accounts); }
+		if (transactions != null) { param.put("transactions", transactions); }
+		if (full != null) { param.put("full", full); }
+		if (expand != null) { param.put("expand", accounts); }
+		if (ledgerHash != null) { param.put("ledger_hash", ledgerHash); }
+		if (ledgerIndex != null) {
+			if (ledgerIndex.getKeyword() != null) {
+				param.put("ledger_index", ledgerIndex.getKeyword().toString());
+			} else {
+				param.put("ledger_index", ledgerIndex.getSeqNum());
+			}
+		}
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("ledger", param);
+		
+		// convert result 
+		StellarResultContainer container = new JSONDeserializer<StellarResultContainer>().use("result", LedgerResult.class).deserialize(jsonResult, StellarResultContainer.class);
+		
+		return (LedgerResult)container.getResult();
+	}
 	
 }
