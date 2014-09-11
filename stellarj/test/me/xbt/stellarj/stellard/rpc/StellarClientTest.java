@@ -16,6 +16,7 @@ import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
+import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -41,6 +42,7 @@ public class StellarClientTest {
 		testPing();
 		testSign();
 		testStaticPathFind();
+		testSubmit();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -216,6 +218,40 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testStaticPathFind failed");
+		}
+	}
+	
+	private static void testSubmit() throws IOException {
+		String txBlob = null;
+// eg.
+//		{
+//	        "TransactionType": "Payment",
+//	        "Account": "gM4Fpv2QuHY4knJsQyYGKEHFGw3eMBwc1U",
+//	        "Destination": "g4eRqgZfzfj3132y17iaf2fp6HQj1gofjt",
+//	        "Amount": {
+//	          "currency": "USD",
+//	          "value": "2",
+//	          "issuer": "gBAde4mkDijZatAdNhBzCsuC7GP4MzhA3B"
+//	        }
+//	      }
+		JSONObject txJson = new JSONObject();
+		txJson.put("TransactionType", "Payment");
+		txJson.put("Account", "gM4Fpv2QuHY4knJsQyYGKEHFGw3eMBwc1U");
+		txJson.put("Destination", "g4eRqgZfzfj3132y17iaf2fp6HQj1gofjt");
+		Amount amount = new Amount();
+		amount.setCurrency("USD");
+		amount.setIssuer("gBAde4mkDijZatAdNhBzCsuC7GP4MzhA3B");
+		amount.setValue("2");
+		txJson.put("Amount", amount.toValue());
+		String secret = "sfwtwgV3zHekZMm6F2cNPzEGzogQqPMEZcdVftKnrstngZvotYr";
+		Boolean failHard = null;
+		Boolean offline = null;
+		
+		SubmitResult result = client.submit(txBlob, txJson, secret, failHard, offline);
+		System.out.println("SubmitResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testSubmit failed");
 		}
 	}
 	

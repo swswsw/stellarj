@@ -14,6 +14,7 @@ import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
+import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
 
 import org.json.JSONObject;
 
@@ -339,8 +340,42 @@ If true stellard won't attempt to verify that the transaction is valid it will j
 		
 		String jsonResult = client.sendCommand("static_path_find", param);
 		
-		// convert result manually because taker_gets can be string or object.
+		// convert result manually
 		StaticPathFindResult result = StaticPathFindResult.convert(jsonResult);
+		
+		return result;
+	}
+	
+	/**
+	 * coded based on {@link https://dev.ripple.com/rippled-apis.html#submit}
+	 * 
+tx_blob	String	(Do not include if tx_json and secret are supplied) Hex representation of the signed transaction to submit.
+tx_json	Object	(Do not include if tx_blob is supplied) Transaction definition in JSON format
+secret	String	(Required if tx_json is supplied) Secret key of the account supplying the transaction, used to sign it. Do not send your secret to untrusted servers or through unsecured network connections.
+fail_hard	Boolean	(Optional, defaults to false) If true, and the transaction fails locally, do not retry or relay the transaction to other servers
+offline	Boolean	(Optional, defaults to false) If true, when constructing the transaction, do not attempt to automatically fill in or validate values. (No effect when specifying the transaction as tx_blob.)
+	 * @param sourceAccount
+	 * @param destinationAccount
+	 * @param destinationAmount
+	 * @return
+	 * @throws IOException
+	 */
+	public SubmitResult submit(String txBlob, JSONObject txJson, String secret, Boolean failHard, Boolean offline) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		if (txBlob != null) { param.put("tx_blob", txBlob); }
+		if (txJson != null) { param.put("tx_json", txJson); }
+		if (secret != null) { param.put("secret", secret); }
+		if (failHard != null) { param.put("fail_hard", failHard); }
+		if (offline != null) { param.put("offline", offline); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("submit", param);
+		
+		// convert result manually
+		SubmitResult result = SubmitResult.convert(jsonResult);
 		
 		return result;
 	}
