@@ -1,12 +1,15 @@
-Java Stellar Library
+# Java Stellar Library
 
 still very early stage of development.
 
 List of stellar apis can be found here:
+
 https://www.stellar.org/api/#api-account_currencies (see left-hand side).
 
-Usage Example
 
+# Usage Example
+
+```
 		String url = "https://test.stellar.org:9002";
 		StellarClient client = new StellarClient(url);
 		
@@ -14,31 +17,31 @@ Usage Example
 		AccountInfoResult result = client.accountInfo(account);
 		System.out.println("AccountInfoResult=" + result);
 		result.getStatus();
+```
+
+
+# Method supported
+
+- accountCurrencies()
+- accountInfo()
+- accountLines()
+- accountOffers()
+- accountTx()
+- bookOffers()
+- createKeys()
+- ledger()
+- ping()
+- sign()
+- staticPathFind()
+- submit()
+- tx()
+- txHistory()
 
 
 
-Method supported
-
-accountCurrencies()
-accountInfo()
-accountLines()
-accountOffers()
-accountTx()
-bookOffers()
-createKeys()
-ledger()
-ping()
-sign()
-staticPathFind()
-submit()
-tx()
-txHistory()
 
 
-
-
-
-questions
+# questions
 
 i now have a decision i'm trying to decide.
 
@@ -73,7 +76,7 @@ StellarClient.account_currencies(account, ledger_index, ledger_hash)
 
 
 
-documenting some of the inconsistencies in stellar.
+# documenting some of the inconsistencies in stellar.
 
 1. most of the time, the fields in request and response objects starts with lowercase and use "_" convention.  
 Sometimes, they start with uppercase and use camelcase convention.
