@@ -16,6 +16,7 @@ import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
+import me.xbt.stellarj.stellard.rpc.result.TxHistoryResult;
 import me.xbt.stellarj.stellard.rpc.result.TxResult;
 
 /**
@@ -42,6 +43,7 @@ public class StellarClientTest {
 		testStaticPathFind();
 		testSubmit();
 		testTx();
+		testTxHistory();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -263,6 +265,17 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testTx failed");
+		}
+	}
+	
+	private static void testTxHistory() throws IOException {
+		String start = "10";
+		
+		TxHistoryResult result = client.txHistory(start);
+		System.out.println("TxHistoryResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testTxHistory failed");
 		}
 	}
 	

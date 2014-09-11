@@ -17,6 +17,7 @@ import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
 import me.xbt.stellarj.stellard.rpc.result.SubscribeResult;
+import me.xbt.stellarj.stellard.rpc.result.TxHistoryResult;
 import me.xbt.stellarj.stellard.rpc.result.TxResult;
 
 import org.json.JSONObject;
@@ -433,4 +434,26 @@ If true, will return the binary representation of this transaction.
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * @param start - Index to start returning transactions from.
+	 * @return
+	 * @throws IOException
+	 */
+	public TxHistoryResult txHistory(String start) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("start", start);
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("tx_history", param);
+		
+		// convert result manually
+		TxHistoryResult result = TxHistoryResult.convert(jsonResult);
+		
+		return result;
+	}
 }
