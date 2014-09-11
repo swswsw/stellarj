@@ -1,6 +1,7 @@
 package me.xbt.stellarj.stellard.rpc;
 
 import java.io.IOException;
+import java.util.List;
 
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
@@ -15,6 +16,8 @@ import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
+import me.xbt.stellarj.stellard.rpc.result.SubscribeResult;
+import me.xbt.stellarj.stellard.rpc.result.TxResult;
 
 import org.json.JSONObject;
 
@@ -376,6 +379,56 @@ offline	Boolean	(Optional, defaults to false) If true, when constructing the tra
 		
 		// convert result manually
 		SubmitResult result = SubmitResult.convert(jsonResult);
+		
+		return result;
+	}
+	
+//	/**
+//	 * not implemented yet.  seems like this is mostly useful for websocket, not rpc.  
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	public SubscribeResult subscribe(List<String> streams, List<String> accounts, List<String> accountsRt, 
+//			List<Book> books, String url, String urlUsername, String urlPassword) throws IOException {
+//		
+//	}
+	
+//	/**
+//	 * not implemented yet.  when i try "transactions_entry" method on test server, i get "notYetImplemented" error.  
+//	 * i assume that it is not yet implemented on stellard.  
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	public TransactionEntryResult transactionEntry()  throws IOException {
+//		
+//	}
+
+	/**
+	 * 
+	 * 
+transaction	
+required 
+Index (hash) of the transaction to fetch.
+
+binary	
+optional 
+If true, will return the binary representation of this transaction.
+	 * @return
+	 * @throws IOException
+	 */
+	public TxResult tx(String transaction, Boolean binary) throws IOException {
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("transaction", transaction);
+		if (binary != null) { param.put("binary", binary); }
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("tx", param);
+		
+		// convert result manually
+		TxResult result = TxResult.convert(jsonResult);
 		
 		return result;
 	}

@@ -1,7 +1,6 @@
 package me.xbt.stellarj.stellard.rpc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.json.JSONObject;
 
@@ -17,8 +16,7 @@ import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
+import me.xbt.stellarj.stellard.rpc.result.TxResult;
 
 /**
  * 
@@ -43,6 +41,7 @@ public class StellarClientTest {
 		testSign();
 		testStaticPathFind();
 		testSubmit();
+		testTx();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -252,6 +251,18 @@ public class StellarClientTest {
 		
 		if (!"success".equals(result.getStatus())) {
 			System.err.println("testSubmit failed");
+		}
+	}
+	
+	private static void testTx() throws IOException {
+		String transaction = "002F9E7ACA1F5A00CE8288B2E07DB3A363F37D9BD12B4E71CAAFC0F7BC9746AC";
+		Boolean binary = null;
+		
+		TxResult result = client.tx(transaction, binary);
+		System.out.println("TxResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testTx failed");
 		}
 	}
 	
