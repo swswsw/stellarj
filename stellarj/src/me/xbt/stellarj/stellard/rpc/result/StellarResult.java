@@ -1,5 +1,8 @@
 package me.xbt.stellarj.stellard.rpc.result;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import flexjson.JSONSerializer;
 
 /**
@@ -54,6 +57,35 @@ public class StellarResult {
 		this.error_message = error_message;
 	}
 
+	/**
+	 * put the converted value into the given result object
+	 * @param jsonString
+	 * @param result - in/out - put the data inside this object.  
+	 */
+	public static void convert(String jsonString, StellarResult result) {
+		JSONObject json = new JSONObject(jsonString);
+		JSONObject resultJson = json.getJSONObject("result");
+		if (resultJson != null) {
+			result.setStatus(resultJson.getString("status"));
+			try { 
+				result.setError(resultJson.getString("error"));
+			} catch (JSONException ex) {
+				// "error" not found, no need to populate.
+			}
+			
+			try { 
+				result.setError_code(resultJson.getLong("error_code"));
+			} catch (JSONException ex) {
+				// "error_code" not found, no need to populate.
+			}
+			
+			try { 
+				result.setError_message(resultJson.getString("error_message"));
+			} catch (JSONException ex) {
+				// "error_message" not found, nos need to populate.
+			}
+		}
+	}
 	
 	public String toString() {
 		return new JSONSerializer().prettyPrint(true).deepSerialize(this);

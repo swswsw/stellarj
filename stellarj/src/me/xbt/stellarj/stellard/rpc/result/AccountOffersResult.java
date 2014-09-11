@@ -66,7 +66,8 @@ public class AccountOffersResult extends StellarResult {
 		JSONObject json = new JSONObject(jsonString);
 		JSONObject resultJson = json.getJSONObject("result");
 		if (resultJson != null) {
-			aor.setStatus(resultJson.getString("status"));
+			StellarResult.convert(jsonString, aor);
+			//aor.setStatus(resultJson.getString("status"));
 			aor.setAccount(resultJson.getString("account"));
 			JSONArray offersJson = resultJson.getJSONArray("offers");
 			List<Offer> offers = new ArrayList<Offer>();

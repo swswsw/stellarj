@@ -197,7 +197,8 @@ public class AccountTxResult extends StellarResult {
 		JSONObject json = new JSONObject(jsonString);
 		JSONObject resultJson = json.getJSONObject("result");
 		if (resultJson != null) {
-			atr.setStatus(resultJson.getString("status"));
+			StellarResult.convert(jsonString, atr);
+			//atr.setStatus(resultJson.getString("status"));
 			atr.setAccount(resultJson.getString("account"));
 			atr.setLedger_index_max(resultJson.getLong("ledger_index_max"));
 			atr.setLedger_index_min(resultJson.getLong("ledger_index_min"));
