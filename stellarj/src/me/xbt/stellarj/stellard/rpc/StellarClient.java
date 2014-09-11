@@ -1,7 +1,6 @@
 package me.xbt.stellarj.stellard.rpc;
 
 import java.io.IOException;
-import java.util.List;
 
 import me.xbt.stellarj.stellard.rpc.result.AccountCurrenciesResult;
 import me.xbt.stellarj.stellard.rpc.result.AccountInfoResult;
@@ -16,7 +15,6 @@ import me.xbt.stellarj.stellard.rpc.result.SignResult;
 import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import me.xbt.stellarj.stellard.rpc.result.StellarResultContainer;
 import me.xbt.stellarj.stellard.rpc.result.SubmitResult;
-import me.xbt.stellarj.stellard.rpc.result.SubscribeResult;
 import me.xbt.stellarj.stellard.rpc.result.TxHistoryResult;
 import me.xbt.stellarj.stellard.rpc.result.TxResult;
 
