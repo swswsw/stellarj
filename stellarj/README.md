@@ -1,7 +1,5 @@
 # Java Stellar Library
 
-still very early stage of development.
-
 List of stellar apis can be found here:
 
 https://www.stellar.org/api/#api-account_currencies (see left-hand side).
