@@ -162,12 +162,7 @@ public class StaticPathFindResult extends StellarResult {
 				JSONObject alternativeJson = alternativesJson.getJSONObject(i);
 				JSONArray pathsComputedJson = alternativeJson.getJSONArray("paths_computed");
 				
-				List<JSONObject> pathsComputed = new ArrayList<JSONObject>();
-				for (int j=0; j<pathsComputedJson.length(); j++) {
-					pathsComputed.add(pathsComputedJson.getJSONObject(j));
-				}
-				
-				alternative.setPaths_computed(pathsComputed);
+				alternative.setPaths_computed(pathsComputedJson);
 				
 				// source_amount can be a string or object.  
 				Amount sourceAmount = new Amount();
@@ -199,12 +194,12 @@ public class StaticPathFindResult extends StellarResult {
 		 * path format is not very clear from documentation.  
 		 * thus, we just put it as a list of JsonObject
 		 */
-		private List<JSONObject> paths_computed = new ArrayList<JSONObject>();
+		private JSONArray paths_computed = null;
 		private Amount source_amount = null;
-		public List<JSONObject> getPaths_computed() {
+		public JSONArray getPaths_computed() {
 			return paths_computed;
 		}
-		public void setPaths_computed(List<JSONObject> paths_computed) {
+		public void setPaths_computed(JSONArray paths_computed) {
 			this.paths_computed = paths_computed;
 		}
 		public Amount getSource_amount() {

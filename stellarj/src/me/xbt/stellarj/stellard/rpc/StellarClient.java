@@ -328,7 +328,21 @@ If true stellard won't attempt to verify that the transaction is valid it will j
 	 * @return
 	 */
 	public StaticPathFindResult staticPathFind(String sourceAccount, String destinationAccount, Amount destinationAmount) throws IOException {
-		return null;
+		RpcClient client = new RpcClient(url);
+		// send command
+		JSONObject param = new JSONObject();
+		param.put("source_account", sourceAccount);
+		param.put("destination_account", destinationAccount);
+		param.put("destination_amount", destinationAmount.toValue());
+		
+		System.out.println("param=" + param);
+		
+		String jsonResult = client.sendCommand("static_path_find", param);
+		
+		// convert result manually because taker_gets can be string or object.
+		StaticPathFindResult result = StaticPathFindResult.convert(jsonResult);
+		
+		return result;
 	}
 	
 }

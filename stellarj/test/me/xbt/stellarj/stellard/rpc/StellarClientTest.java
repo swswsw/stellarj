@@ -15,6 +15,7 @@ import me.xbt.stellarj.stellard.rpc.result.CreateKeysResult;
 import me.xbt.stellarj.stellard.rpc.result.LedgerResult;
 import me.xbt.stellarj.stellard.rpc.result.PingResult;
 import me.xbt.stellarj.stellard.rpc.result.SignResult;
+import me.xbt.stellarj.stellard.rpc.result.StaticPathFindResult;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -39,6 +40,7 @@ public class StellarClientTest {
 		testLedger();
 		testPing();
 		testSign();
+		testStaticPathFind();
 	}
 	
 	private static void testAccountCurrencies() throws IOException {
@@ -201,18 +203,33 @@ public class StellarClientTest {
 		}
 	}
 	
-	
-	
-	private static void tempTest() {
-		AccountCurrenciesResult acr = new AccountCurrenciesResult();
-		System.out.println(new JSONSerializer().include("receiveCurrencies").include("sendCurrencies").serialize(acr));
+	private static void testStaticPathFind() throws IOException {
+		String sourceAccount = "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb";
+		String destinationAccount = "gBV8kvK1rkFPmNRFzFkipHy2cZAeUf6RPz";
+		Amount destinationAmount = new Amount();
+		destinationAmount.setCurrency("USD");
+		destinationAmount.setValue("50");
+		destinationAmount.setIssuer("gBV8kvK1rkFPmNRFzFkipHy2cZAeUf6RPz");
 		
-		acr = new JSONDeserializer<AccountCurrenciesResult>()
-				//.include("receiveCurrencies").include("sendCurrencies")
-				.use("receiveCurrencies", ArrayList.class)
-				//.use("receiveCurrencies.members", ArrayList.class)
-				.use("receiveCurrencies.members.values", String.class)
-				.deserialize("{ \"ledger_current_index\" : 163312,      \"receive_currencies\" : [\"USD\"],      \"send_currencies\" : [],      \"status\" : \"success\"   }", AccountCurrenciesResult.class);
-		System.out.println(acr);
+		StaticPathFindResult result = client.staticPathFind(sourceAccount, destinationAccount, destinationAmount);
+		System.out.println("StaticPathFindResult=" + result);
+		
+		if (!"success".equals(result.getStatus())) {
+			System.err.println("testStaticPathFind failed");
+		}
 	}
+	
+	
+//	private static void tempTest() {
+//		AccountCurrenciesResult acr = new AccountCurrenciesResult();
+//		System.out.println(new JSONSerializer().include("receiveCurrencies").include("sendCurrencies").serialize(acr));
+//		
+//		acr = new JSONDeserializer<AccountCurrenciesResult>()
+//				//.include("receiveCurrencies").include("sendCurrencies")
+//				.use("receiveCurrencies", ArrayList.class)
+//				//.use("receiveCurrencies.members", ArrayList.class)
+//				.use("receiveCurrencies.members.values", String.class)
+//				.deserialize("{ \"ledger_current_index\" : 163312,      \"receive_currencies\" : [\"USD\"],      \"send_currencies\" : [],      \"status\" : \"success\"   }", AccountCurrenciesResult.class);
+//		System.out.println(acr);
+//	}
 }
