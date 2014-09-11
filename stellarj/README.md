@@ -17,6 +17,25 @@ Usage Example
 
 
 
+Method supported
+
+accountCurrencies()
+accountInfo()
+accountLines()
+accountOffers()
+accountTx()
+bookOffers()
+createKeys()
+ledger()
+ping()
+sign()
+staticPathFind()
+submit()
+tx()
+txHistory()
+
+
+
 
 
 questions
